@@ -4,18 +4,17 @@ import { ProductImg } from "../components/ProductImage";
 import { ProductButtons } from "../components/ProductButtons";
 import { ProductTitle } from "../components/ProductTitle";
 import { products } from "../data/products";
-import { ProductInCart } from "../interfaces/interfaces";
-
+import { Product, ProductInCart } from "../interfaces/interfaces";
 import "../styles/custom-styles.css";
 
-const ShoppingPage = () => {
-  const [shoppingCart, setShoppingCart] = useState<{[key: string]: ProductInCart}>({
-    // '1':{...products[0], count: 10},
-    // '2':{...products[1], count: 5}
-  });
-console.log(shoppingCart);
 
-  return (
+const ShoppingPage = () => {
+  const [shoppingCart, setShoppingCart] = useState<{[key: string]: ProductInCart}>({});
+  const onProductCountChange = ({ count, product }: { count: number; product: Product}) => {
+  console.log('onProductCountChange', count, product);    
+};
+
+return (
     <div>
       <h1> Shopping Store </h1>
       <hr />
@@ -23,7 +22,8 @@ console.log(shoppingCart);
         {products.map((product) => (
           <ProductCard
             product={product}
-            className="bg-dark text-white">
+            className="bg-dark text-white"
+            onChange={onProductCountChange}>
             <ProductImg
               className="custom-image"
               style={{ boxShadow: "10px 10px 10px rgba(0,0,0,0.2)" }}/>
