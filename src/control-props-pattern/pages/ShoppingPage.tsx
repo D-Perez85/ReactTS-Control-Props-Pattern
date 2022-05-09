@@ -7,14 +7,22 @@ import { products } from "../data/products";
 import { Product, ProductInCart } from "../interfaces/interfaces";
 import "../styles/custom-styles.css";
 
-
 const ShoppingPage = () => {
   const [shoppingCart, setShoppingCart] = useState<{[key: string]: ProductInCart}>({});
-  const onProductCountChange = ({ count, product }: { count: number; product: Product}) => {
-  console.log('onProductCountChange', count, product);    
-};
 
-return (
+  const onProductCountChange = ({ count, product}: {count: number; product: Product}) => {
+    setShoppingCart((oldShoppingCart) => {
+          if (count === 0) {
+            const { [product.id]: toDelete, ...rest } = oldShoppingCart;
+            return rest;
+          }
+          return {
+            ...oldShoppingCart,
+            [product.id]: { ...product, count },
+          };
+        });
+      };
+  return (
     <div>
       <h1> Shopping Store </h1>
       <hr />
@@ -34,18 +42,25 @@ return (
       </div>
 
       <div className="shopping-cart">
-        <ProductCard
-          product={products[1]}
-          className="bg-dark text-white"
-          style={{ width: "100px" }}>
-          <ProductImg
-            className="custom-image"
-            style={{ boxShadow: "10px 10px 10px rgba(0,0,0,0.2)" }}/>
-          <ProductButtons
-            className="custom-buttons"
-            style={{ display: "flex", justifyContent: "center" }}/>
-        </ProductCard>
+      {Object.entries(shoppingCart).map(([key, product]) => (
+          <ProductCard
+            product={product}
+            className="bg-dark text-white"
+            style={{ width: "100px" }}
+            key={key}
+            value={product.count}
+            onChange={onProductCountChange}>
+              <ProductImg className="custom-image" style={{ boxShadow: "10px 10px 10px rgba(0,0,0,0.2)" }}/>
+              <ProductButtons 
+              className="custom-buttons" 
+              style={{ display: "flex", justifyContent: "center" }}
+              />
+          </ProductCard>
+        ))}
       </div>
+      {/* <div>
+        <code>{JSON.stringify(shoppingCart, null, 5)}</code>
+      </div> */}
     </div>
   );
 };
