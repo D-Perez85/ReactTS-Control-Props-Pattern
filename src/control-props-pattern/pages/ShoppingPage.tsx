@@ -1,34 +1,12 @@
-import { useState } from "react";
-import ProductCard from "../components/ProductCard";
+import {ProductCard} from "../components/ProductCard";
 import { ProductImg } from "../components/ProductImage";
 import { ProductButtons } from "../components/ProductButtons";
 import { ProductTitle } from "../components/ProductTitle";
-import { products } from "../data/products";
-import { Product, ProductInCart } from "../interfaces/interfaces";
+import { useShoppingCart } from "../hooks/useShoppingCart";
 import "../styles/custom-styles.css";
 
 const ShoppingPage = () => {
-  const [shoppingCart, setShoppingCart] = useState<{[key: string]: ProductInCart}>({});
-
-  const onProductCountChange = ({ count, product }: { count: number; product: Product}) => {
-    setShoppingCart((oldShoppingCart) => {
-        const productInCart: ProductInCart = oldShoppingCart[product.id] || {
-            ...product,
-            count: 0,
-        };
-
-  if (Math.max(productInCart.count + count, 0) > 0) {
-    productInCart.count += count;
-    return {
-        ...oldShoppingCart,
-        [product.id]: productInCart,
-        };
-  }
-  //BORRAR EL PRODUCTO SI COUNT <= 0
-  const { [product.id]: toDelete, ...rest } = oldShoppingCart;
-  return rest;
-});
-};
+  const { shoppingCart, onProductCountChange, products } = useShoppingCart();
   return (
     <div>
       <h1> Shopping Store </h1>
@@ -40,9 +18,7 @@ const ShoppingPage = () => {
             className="bg-dark text-white"
             onChange={onProductCountChange}
             value={shoppingCart[product.id]?.count || 0}>
-            <ProductImg
-              className="custom-image"
-              style={{ boxShadow: "10px 10px 10px rgba(0,0,0,0.2)" }}/>
+            <ProductImg className="custom-image" style={{ boxShadow: "10px 10px 10px rgba(0,0,0,0.2)" }}/>
             <ProductTitle />
             <ProductButtons className="custom-buttons" />
           </ProductCard>
