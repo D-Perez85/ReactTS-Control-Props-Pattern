@@ -1,6 +1,7 @@
 import { ProductButtons } from '../components/ProductButtons';
 import ProductCard from '../components/ProductCard';
 import { ProductImg } from '../components/ProductImage';
+import { ProductTitle } from '../components/ProductTitle';
 
 import "../styles/custom-styles.css";
 const product = {
@@ -18,6 +19,7 @@ const ShoppingPage = () => {
         <ProductImg
             className="custom-image"
             style={{ boxShadow: "10px 10px 10px rgba(0,0,0,0.2)"}} />
+        <ProductTitle/>
         <ProductButtons className="custom-buttons" />
       </ProductCard>        
       </div>
