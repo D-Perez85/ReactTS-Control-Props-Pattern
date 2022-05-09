@@ -1,9 +1,9 @@
 import React from 'react';
-import logo from './logo.svg';
+import Navigation from './routes/Navigation';
 
 function App() {
   return (
-    <h3>CONTROL PROPS PATTERN</h3>
+    <Navigation/>
   );
 }
 
